@@ -162,11 +162,51 @@ def cmd_journals():
 
 
 def cmd_run():
-    cmd_fetch()
-    cmd_discover()
+    """Run the weekly public-source collection pipeline."""
+    if _load_creds():
+        cmd_fetch()
+        cmd_discover()
     cmd_scrape()
     cmd_journals()
     cmd_report()
+
+
+def cmd_notify():
+    """Notify the configured Telegram chat about the latest weekly report."""
+    import json, os
+    from src import telegram_notifier
+
+    if not telegram_notifier.is_configured():
+        console.print("[yellow]TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set — skipping notification.[/yellow]")
+        return
+
+    reports_dir = Path(__file__).parent / "reports"
+    reports = sorted(reports_dir.glob("*-W*.md"))
+    if not reports:
+        console.print("[yellow]No reports found — nothing to notify.[/yellow]")
+        return
+    latest = reports[-1]
+
+    def count_articles(cache_name: str) -> int:
+        cache = Path(__file__).parent / "data" / cache_name
+        if not cache.exists():
+            return 0
+        data = json.loads(cache.read_text())
+        return sum(len(articles) for articles in data.values())
+
+    web_count = count_articles("webscrape_cache.json")
+    journal_count = count_articles("journals_cache.json")
+
+    lines = [
+        f"🧠 *Stroke Weekly Report {latest.stem}*",
+        f"新聞 {web_count} 篇｜期刊 {journal_count} 篇",
+    ]
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    if repo:
+        lines.append(f"https://github.com/{repo}/blob/main/reports/{latest.name}")
+
+    telegram_notifier.send_message("\n".join(lines))
+    console.print(f"[green]✓ Telegram notification sent for {latest.name}[/green]")
 
 
 COMMANDS = {
@@ -178,6 +218,7 @@ COMMANDS = {
     "journals": cmd_journals,
     "accounts": cmd_accounts,
     "run": cmd_run,
+    "notify": cmd_notify,
 }
 
 if __name__ == "__main__":
