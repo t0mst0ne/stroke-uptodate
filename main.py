@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-Breast Cancer Twitter Trend Tracker
+Stroke & Cerebrovascular Disease Trend Tracker
 
 Usage:
     python main.py setup          # save Twitter cookies (auth_token + ct0)
     python main.py fetch          # fetch tweets from tracked KOLs
     python main.py discover       # expand KOL list from recent mentions
+    python main.py scrape         # scrape stroke news from configured web sources
+    python main.py journals       # fetch stroke journal articles via CrossRef
     python main.py report         # generate weekly .md report
-    python main.py run            # fetch + discover + report in one shot
+    python main.py run            # fetch + discover + scrape + journals + report
     python main.py accounts       # list tracked accounts
 """
 
@@ -110,10 +112,10 @@ def cmd_accounts():
 
 def cmd_scrape(days: int = 7):
     import asyncio, json
-    console.print("\n[bold]Scraping OncDaily & OncLive...[/bold]")
+    console.print("\n[bold]Scraping stroke & neurology web sources...[/bold]")
     results = asyncio.run(webscraper.fetch_all(days=days))
     for source, articles in results.items():
-        console.print(f"  [cyan]{source}[/cyan]: {len(articles)} breast cancer articles found")
+        console.print(f"  [cyan]{source}[/cyan]: {len(articles)} stroke/cerebrovascular articles found")
         for a in articles[:5]:
             console.print(f"    • {a.title[:80]}")
             if a.url:
@@ -135,10 +137,10 @@ def cmd_scrape(days: int = 7):
 
 def cmd_journals():
     import asyncio, json
-    console.print("\n[bold]Fetching journal articles via CrossRef...[/bold]")
+    console.print("\n[bold]Fetching stroke & neurology journal articles via CrossRef...[/bold]")
     results = asyncio.run(crossref_fetcher.fetch_all())
     for journal, articles in results.items():
-        console.print(f"  [cyan]{journal}[/cyan]: {len(articles)} BC articles")
+        console.print(f"  [cyan]{journal}[/cyan]: {len(articles)} stroke/cerebrovascular articles")
         for a in articles[:4]:
             has_abs = "✓" if a.abstract_digest else "—"
             console.print(f"    [{has_abs}] {a.title[:75]}")

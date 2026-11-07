@@ -106,7 +106,7 @@ async def _search_query(api: API, query: str, limit: int) -> list:
 async def _probe(api: API) -> bool:
     """Return True if Twitter search responds within timeout."""
     try:
-        result = await asyncio.wait_for(_collect(api, "breast cancer", limit=1), timeout=_PROBE_TIMEOUT_SEC)
+        result = await asyncio.wait_for(_collect(api, "ischemic stroke", limit=1), timeout=_PROBE_TIMEOUT_SEC)
         return True  # even empty list is OK — at least it didn't hang
     except asyncio.TimeoutError:
         return False
@@ -136,7 +136,7 @@ async def _run_fetch(username: str, email: str, auth_token: str, ct0: str):
         console.print(
             "[red]✗ Twitter search blocked or unreachable "
             "(IP restriction / expired session / changed API).[/red]\n"
-            "[dim]Skipping fetch. Other data sources (CrossRef, OncDaily, ESMO) still work.[/dim]"
+            "[dim]Skipping fetch. Other data sources (CrossRef, NeurologyLive, AHA/Stroke) still work.[/dim]"
         )
         return
 

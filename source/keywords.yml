@@ -1,106 +1,157 @@
-# Breast cancer relevance keywords
+# Stroke & cerebrovascular disease relevance keywords
 # Used by: webscraper (article filtering & tagging), fetcher (tweet classification)
 # Add / remove terms here to tune what gets captured.
 
-breast_cancer_keywords:
-  # Disease subtypes
-  - breast cancer
-  - breast carcinoma
-  - HER2
-  - HER2+
-  - HER2-low
-  - HER2-ultralow
-  - TNBC
-  - triple-negative
-  - ER+
-  - HR+
+stroke_keywords:
+  # Disease subtypes & syndromes
+  - stroke
+  - ischemic stroke
+  - acute ischemic stroke
+  - AIS
+  - hemorrhagic stroke
+  - intracerebral hemorrhage
+  - ICH
+  - subarachnoid hemorrhage
+  - SAH
+  - transient ischemic attack
+  - TIA
+  - cerebrovascular
+  - cerebral infarction
+  - brain ischemia
+  - large vessel occlusion
+  - LVO
+  - medium vessel occlusion
+  - MeVO
+  - basilar artery occlusion
+  - BAO
+  - cerebral small vessel disease
+  - CSVD
+  - lacunar stroke
+  - cryptogenic stroke
+  - ESUS
+  - cerebral venous thrombosis
+  - CVT
+  - carotid stenosis
+  - intracranial atherosclerosis
+  - ICAD
+  - moyamoya
+  - CADASIL
+  - cerebral amyloid angiopathy
+  - CAA
+  - cerebral aneurysm
+  - arteriovenous malformation
+  - AVM
+  - vascular cognitive impairment
 
-  # HER2-targeted agents
-  - trastuzumab
-  - pertuzumab
-  - T-DM1
-  - T-DXd
-  - Enhertu
-  - trastuzumab deruxtecan
-  - tucatinib
-  - Tukysa
-  - neratinib
-  - margetuximab
+  # Intravenous thrombolysis (IVT)
+  - thrombolysis
+  - intravenous thrombolysis
+  - IVT
+  - tenecteplase
+  - TNK
+  - alteplase
+  - tPA
+  - rt-PA
+  - reteplase
+  - prourokinase
 
-  # ADC
-  - sacituzumab
-  - Trodelvy
-  - datopotamab
-  - Datroway
-  - TROP2
-  - ADC
+  # Endovascular thrombectomy (EVT) & neurointervention
+  - mechanical thrombectomy
+  - thrombectomy
+  - endovascular therapy
+  - endovascular thrombectomy
+  - EVT
+  - stent retriever
+  - aspiration thrombectomy
+  - carotid endarterectomy
+  - CEA
+  - carotid artery stenting
+  - CAS
+  - TCAR
+  - flow diverter
+  - aneurysm coiling
+  - decompressive craniectomy
+  - hemicraniectomy
 
-  # CDK4/6 inhibitors
-  - CDK4/6
-  - palbociclib
-  - Ibrance
-  - ribociclib
-  - Kisqali
-  - abemaciclib
-  - Verzenio
+  # Antiplatelets
+  - antiplatelet
+  - dual antiplatelet
+  - DAPT
+  - aspirin
+  - clopidogrel
+  - ticagrelor
+  - cilostazol
+  - prasugrel
+  - tirofiban
+  - eptifibatide
+  - glenzocimab
 
-  # PARP inhibitors
-  - PARP
-  - olaparib
-  - Lynparza
-  - talazoparib
-  - Talzenna
-  - BRCA
+  # Anticoagulants & Factor XIa inhibitors
+  - anticoagulation
+  - anticoagulant
+  - DOAC
+  - NOAC
+  - apixaban
+  - rivaroxaban
+  - dabigatran
+  - edoxaban
+  - warfarin
+  - atrial fibrillation
+  - factor XIa
+  - FXIa
+  - asundexian
+  - milvexian
+  - abelacimab
+  - andexanet alfa
+  - idarucizumab
 
-  # Endocrine / SERD
-  - ESR1
-  - elacestrant
-  - Orserdu
-  - imlunestrant
-  - Inluriyo
-  - fulvestrant
-  - Faslodex
-  - tamoxifen
-  - aromatase inhibitor
-  - letrozole
-  - anastrozole
-  - exemestane
-  - endocrine
+  # Neuroprotection & recovery
+  - neuroprotection
+  - neuroprotective
+  - nerinetide
+  - edaravone
+  - butylphthalide
+  - vagus nerve stimulation
+  - stroke rehabilitation
 
-  # PI3K/AKT/mTOR
-  - PI3K
-  - PIK3CA
-  - alpelisib
-  - Piqray
-  - capivasertib
-  - AKT
-  - mTOR
-  - everolimus
+  # Imaging & clinical scales
+  - NIHSS
+  - mRS
+  - ASPECTS
+  - CT perfusion
+  - ischemic penumbra
+  - infarct core
+  - collateral circulation
+  - hematoma expansion
 
-  # Immunotherapy
-  - PD-L1
-  - PD-1
-  - pembrolizumab
-  - Keytruda
-  - atezolizumab
-  - immunotherapy
-
-  # Surgical / staging
-  - lumpectomy
-  - mastectomy
-  - neoadjuvant
-  - adjuvant
-  - mammogram
-
-  # Trial names (key ones worth tagging)
-  - DESTINY-Breast
-  - ASCENT
-  - NATALEE
-  - monarchE
-  - MONALEESA
-  - MONARCH
-  - PALOMA
-  - OlympiA
-  - EMBER
-  - KEYNOTE-522
-  - KATHERINE
+  # Landmark & active clinical trials
+  - DAWN
+  - DEFUSE-3
+  - EXTEND-IA
+  - AcT trial
+  - TRACE
+  - TIMELESS
+  - ANGEL-ASPECT
+  - SELECT2
+  - RESCUE-Japan
+  - TENSION
+  - LASTE
+  - TESLA
+  - DISTAL
+  - ESCAPE-MeVO
+  - DISCOUNT
+  - ENRICH
+  - ANNEXA-I
+  - INTERACT3
+  - INTERACT4
+  - SWITCH
+  - CHANCE
+  - POINT
+  - THALES
+  - INSPIRES
+  - ARCADIA
+  - ELAN
+  - OPTIMAS
+  - OCEANIC-STROKE
+  - LIBREXIA-STROKE
+  - CREST

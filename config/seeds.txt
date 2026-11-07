@@ -1,14 +1,14 @@
-# Breast cancer KOL seed accounts
+# Stroke & Cerebrovascular KOL and society seed accounts
 # Format: one Twitter handle per line (no @)
-tatianapro
-DrAttai
-NancyLinCC
-Hope_Rugo
-DrEricaMayer
-OncoAlert
-DrJoyceOConnell
-drsusanlovemd
-BCRFcure
-palbociclib
-VKMouret
-Mark_Pegram
+StrokeAHA_ASA
+ESOstroke
+WorldStrokeOrg
+SVINociety
+SNISinfo
+JNIS_BMJ
+TheLancetNeuro
+JAMA_Neuro
+NeurologyToday
+achaturvedi_md
+MichaelHillMD
+RaulNogueiraMD

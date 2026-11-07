@@ -72,9 +72,9 @@ jobs:
 
           # Rebuild Home.md index (newest first)
           {
-            echo "# 乳癌治療趨勢週報"
+            echo "# 腦中風與腦血管疾病治療趨勢週報"
             echo ""
-            echo "> 每週自動生成 · 資料來源：OpenEvidence、OncDaily、OncLive、ESMO、ClinicalTrials.gov"
+            echo "> 每週自動生成 · 資料來源：OpenEvidence、PubMed、CrossRef（Stroke / Lancet Neurol / JAMA Neurol 等）、NeurologyLive、Medscape、AHA/ASA、ESO、ClinicalTrials.gov"
             echo ""
             echo "| 週次 | 連結 |"
             echo "|------|------|"

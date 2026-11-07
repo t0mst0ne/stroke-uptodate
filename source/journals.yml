@@ -1,15 +1,16 @@
-# CrossRef journal sources
+# CrossRef journal sources for Stroke & Cerebrovascular Disease
 # Used by: src/crossref_fetcher.py
 #
 # To add a new journal: append an entry with its ISSN.
 # Find ISSN at https://portal.issn.org or the journal's About page.
 #
 # Fields:
-#   name         display name in report
-#   issn         print or electronic ISSN (CrossRef accepts either)
-#   days_back    how many days of articles to fetch (default: 14)
-#   max_items    max articles to retrieve per run (default: 30)
-#   bc_filter    filter to breast-cancer-relevant articles only (default: true)
+#   name          display name in report
+#   full_name     full journal title
+#   issn          print or electronic ISSN (CrossRef accepts either)
+#   days_back     how many days of articles to fetch (default: 7)
+#   max_items     max articles to retrieve per run (default: 30)
+#   topic_filter  filter to stroke/cerebrovascular-relevant articles only (default: true)
 #
 # CrossRef API is free, no key required.
 # Polite pool: include a mailto in User-Agent (set in crossref_fetcher.py).
@@ -17,52 +18,101 @@
 crossref_email: "ppoiu87@gmail.com"   # used in User-Agent for CrossRef polite pool
 
 journals:
-  - name: JCO
-    full_name: "Journal of Clinical Oncology"
-    issn: "0732-183X"
-    days_back: 14
-    max_items: 30
-    bc_filter: true
+  - name: Stroke
+    full_name: "Stroke"
+    issn: "0039-2499"
+    days_back: 7
+    max_items: 35
+    topic_filter: false   # Stroke is already 100% stroke/cerebrovascular-specific
 
-  # Uncomment to activate — no code changes needed
+  - name: Lancet Neurology
+    full_name: "The Lancet Neurology"
+    issn: "1474-4422"
+    days_back: 7
+    max_items: 25
+    topic_filter: true
+
+  - name: JAMA Neurology
+    full_name: "JAMA Neurology"
+    issn: "2168-6149"
+    days_back: 7
+    max_items: 25
+    topic_filter: true
+
+  - name: Neurology
+    full_name: "Neurology"
+    issn: "0028-3878"
+    days_back: 7
+    max_items: 30
+    topic_filter: true
+
+  - name: JNNP
+    full_name: "Journal of Neurology, Neurosurgery & Psychiatry"
+    issn: "0022-3050"
+    days_back: 7
+    max_items: 25
+    topic_filter: true
+
+  - name: Int J Stroke
+    full_name: "International Journal of Stroke"
+    issn: "1747-4930"
+    days_back: 7
+    max_items: 25
+    topic_filter: false
+
+  - name: European Stroke Journal
+    full_name: "European Stroke Journal"
+    issn: "2396-9873"
+    days_back: 7
+    max_items: 25
+    topic_filter: false
+
+  - name: JNIS
+    full_name: "Journal of NeuroInterventional Surgery"
+    issn: "1759-8478"
+    days_back: 7
+    max_items: 25
+    topic_filter: true
+
+  # Uncomment to activate general medical / additional neurology journals — no code changes needed
   # - name: NEJM
   #   full_name: "New England Journal of Medicine"
   #   issn: "0028-4793"
-  #   days_back: 14
+  #   days_back: 7
   #   max_items: 20
-  #   bc_filter: true
+  #   topic_filter: true
 
-  # - name: Lancet Oncology
-  #   full_name: "The Lancet Oncology"
-  #   issn: "1470-2045"
-  #   days_back: 14
-  #   max_items: 25
-  #   bc_filter: true
-
-  # - name: JAMA Oncology
-  #   full_name: "JAMA Oncology"
-  #   issn: "2374-2437"
-  #   days_back: 14
+  # - name: The Lancet
+  #   full_name: "The Lancet"
+  #   issn: "0140-6736"
+  #   days_back: 7
   #   max_items: 20
-  #   bc_filter: true
+  #   topic_filter: true
 
-  # - name: Annals of Oncology
-  #   full_name: "Annals of Oncology"
-  #   issn: "0923-7534"
-  #   days_back: 14
+  # - name: JAMA
+  #   full_name: "JAMA"
+  #   issn: "0098-7484"
+  #   days_back: 7
   #   max_items: 20
-  #   bc_filter: true
+  #   topic_filter: true
 
-  # - name: Blood          # hematology
-  #   full_name: "Blood"
-  #   issn: "0006-4971"
-  #   days_back: 14
-  #   max_items: 25
-  #   bc_filter: true
+  # - name: Annals of Neurology
+  #   full_name: "Annals of Neurology"
+  #   issn: "0364-5134"
+  #   days_back: 7
+  #   max_items: 20
+  #   topic_filter: true
 
-  # - name: JCO Oncology Practice
-  #   full_name: "JCO Oncology Practice"
-  #   issn: "2688-1527"
-  #   days_back: 14
-  #   max_items: 15
-  #   bc_filter: true
+  # - name: Cerebrovascular Diseases
+  #   full_name: "Cerebrovascular Diseases"
+  #   issn: "1015-9770"
+  #   days_back: 7
+  #   max_items: 20
+  #   topic_filter: false
+
+  # - name: SVIN
+  #   full_name: "Stroke: Vascular and Interventional Neurology"
+  #   issn: "2694-5746"
+  #   days_back: 7
+  #   max_items: 20
+  #   topic_filter: false

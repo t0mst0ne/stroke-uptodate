@@ -1,15 +1,18 @@
-"""Scrape latest breast cancer articles from configured web sources."""
+"""Scrape latest stroke & cerebrovascular articles from configured web sources."""
 
 import asyncio
 import re
 from dataclasses import dataclass, field
+from datetime import date, timedelta
 from email.utils import parsedate_to_datetime
 from typing import Optional
+from urllib.parse import quote_plus
 
 import httpx
 from bs4 import BeautifulSoup
 
 from . import config
+from .crossref_fetcher import extract_tags, passes_prescreen
 
 
 @dataclass
@@ -22,14 +25,12 @@ class Article:
     tags: list[str] = field(default_factory=list)
 
 
-def _is_bc_relevant(text: str) -> bool:
-    tl = text.lower()
-    return any(kw.lower() in tl for kw in config.keywords())
+def _is_topic_relevant(text: str) -> bool:
+    return passes_prescreen(text)
 
 
 def _extract_tags(text: str) -> list[str]:
-    tl = text.lower()
-    return list(dict.fromkeys(kw for kw in config.keywords() if kw.lower() in tl))
+    return extract_tags(text)
 
 
 def _rfc_to_iso(rfc_date: str) -> Optional[str]:
@@ -39,7 +40,13 @@ def _rfc_to_iso(rfc_date: str) -> Optional[str]:
         return None
 
 
-def _parse_rss_items(xml_text: str, source_name: str, bc_filter: bool = True) -> list[Article]:
+def _parse_rss_items(
+    xml_text: str,
+    source_name: str,
+    topic_filter: bool = True,
+    days: int = 7,
+) -> list[Article]:
+    cutoff = (date.today() - timedelta(days=days)).isoformat()
     soup = BeautifulSoup(xml_text, "lxml-xml")
     articles = []
     for item in soup.find_all("item"):
@@ -58,6 +65,8 @@ def _parse_rss_items(xml_text: str, source_name: str, bc_filter: bool = True) ->
 
         pubdate_el = item.find("pubDate")
         pub = _rfc_to_iso(pubdate_el.get_text(strip=True)) if pubdate_el else None
+        if pub and pub < cutoff:
+            continue
 
         desc_el = item.find("description") or item.find("content:encoded")
         summary = ""
@@ -66,7 +75,7 @@ def _parse_rss_items(xml_text: str, source_name: str, bc_filter: bool = True) ->
             summary = BeautifulSoup(raw, "html.parser").get_text()[:300]
 
         combined = title + " " + summary
-        if bc_filter and not _is_bc_relevant(combined):
+        if topic_filter and not _is_topic_relevant(combined):
             continue
 
         articles.append(Article(
@@ -80,28 +89,33 @@ def _parse_rss_items(xml_text: str, source_name: str, bc_filter: bool = True) ->
     return articles
 
 
-async def _fetch_rss(client: httpx.AsyncClient, src: dict) -> list[Article]:
+async def _fetch_rss(client: httpx.AsyncClient, src: dict, days: int = 7) -> list[Article]:
     try:
         r = await client.get(src["url"], timeout=20)
         if r.status_code != 200:
             return []
+        topic_filter = src.get("topic_filter", src.get("bc_filter", True))
         return _parse_rss_items(
             r.text,
             src["name"],
-            bc_filter=src.get("bc_filter", True),
+            topic_filter=topic_filter,
+            days=days,
         )
     except Exception:
         return []
 
 
-async def _fetch_google_news(client: httpx.AsyncClient, src: dict) -> list[Article]:
+async def _fetch_google_news(client: httpx.AsyncClient, src: dict, days: int = 7) -> list[Article]:
     domain = src["domain"]
     max_items = src.get("max_items", 20)
+    query_term = src.get("query", "stroke OR cerebrovascular")
     noise_pat = re.compile(src["noise_filter"], re.I) if src.get("noise_filter") else None
+    cutoff = (date.today() - timedelta(days=days)).isoformat()
 
+    q = quote_plus(f"site:{domain} ({query_term}) when:{days}d")
     feed_url = (
         f"https://news.google.com/rss/search"
-        f"?q=site:{domain}+breast+cancer&hl=en-US&gl=US&ceid=US:en"
+        f"?q={q}&hl=en-US&gl=US&ceid=US:en"
     )
     try:
         r = await client.get(feed_url, timeout=20)
@@ -122,7 +136,7 @@ async def _fetch_google_news(client: httpx.AsyncClient, src: dict) -> list[Artic
         # Strip site-name suffixes added by Google News:
         #   "Title | Site Name"  — pipe is unambiguous separator, strip everything after
         #   "Title - Site Name"  — only strip if suffix starts with a capital (site name)
-        #                          to avoid cutting "VIKTORIA-1" or "HR+/HER2–" mid-title
+        #                          to avoid cutting trial names like "ANGEL-ASPECT" mid-title
         title = re.sub(r"\s*\|\s*[^|]*$", "", title).strip()
         title = re.sub(r"\s*-\s*[A-Z][^-]{2,45}$", "", title).strip()
 
@@ -134,10 +148,12 @@ async def _fetch_google_news(client: httpx.AsyncClient, src: dict) -> list[Artic
 
         pubdate_el = item.find("pubDate")
         pub = _rfc_to_iso(pubdate_el.get_text(strip=True)) if pubdate_el else None
+        if not pub or pub < cutoff:
+            continue
 
         if noise_pat and noise_pat.search(title):
             continue
-        if not _is_bc_relevant(title):
+        if not _is_topic_relevant(title):
             continue
 
         articles.append(Article(
@@ -153,7 +169,7 @@ async def _fetch_google_news(client: httpx.AsyncClient, src: dict) -> list[Artic
 
 
 async def fetch_all(days: int = 7) -> dict[str, list[Article]]:
-    """Fetch articles from all configured sources. Returns {source_name: [Article]}."""
+    """Fetch articles from all configured sources for the last `days` days."""
     headers = config.http_headers()
     sources = config.web_sources()
 
@@ -161,9 +177,9 @@ async def fetch_all(days: int = 7) -> dict[str, list[Article]]:
         tasks = []
         for src in sources:
             if src["type"] == "rss":
-                tasks.append(_fetch_rss(client, src))
+                tasks.append(_fetch_rss(client, src, days=days))
             elif src["type"] == "google_news":
-                tasks.append(_fetch_google_news(client, src))
+                tasks.append(_fetch_google_news(client, src, days=days))
 
         results_list = await asyncio.gather(*tasks)
 
@@ -178,7 +194,7 @@ def format_articles_md(results: dict[str, list[Article]]) -> str:
         if not articles:
             lines.append(f"\n### {source}\n\n_本週未取得相關文章_\n")
             continue
-        lines.append(f"\n### {source}（{len(articles)} 篇乳癌相關）\n")
+        lines.append(f"\n### {source}（{len(articles)} 篇腦中風／腦血管相關）\n")
         lines.append("| 標題 | 日期 | 關鍵詞 |")
         lines.append("|------|------|--------|")
         for a in articles[:15]:

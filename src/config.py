@@ -15,7 +15,8 @@ def _load(filename: str) -> Any:
 
 @lru_cache(maxsize=None)
 def keywords() -> list[str]:
-    return _load("keywords.yml")["breast_cancer_keywords"]
+    data = _load("keywords.yml")
+    return data.get("stroke_keywords") or data.get("keywords") or next(iter(data.values()))
 
 
 @lru_cache(maxsize=None)

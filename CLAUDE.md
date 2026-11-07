@@ -1,13 +1,13 @@
-# CLAUDE.md — Breast Cancer Weekly Report
+# CLAUDE.md — Stroke & Cerebrovascular Weekly Report
 
 ## Project Purpose
 
-Auto-generate weekly Markdown reports on breast cancer treatment trends from:
+Auto-generate weekly Markdown reports on stroke and cerebrovascular disease treatment & research trends from:
 - OpenEvidence MCP (`mcp__openevidence__oe_ask`)
 - PubMed MCP (`mcp__claude_ai_PubMed__search_articles`)
 - ClinicalTrials.gov MCP (`mcp__claude_ai_Clinical_Trials__search_trials`)
-- CrossRef API (via `python main.py journals`)
-- Web news (OncDaily RSS, OncLive/ESMO via Google News RSS)
+- CrossRef API (via `uv run python main.py journals` — *Stroke*, *Lancet Neurology*, *JAMA Neurology*, *Neurology*, *JNNP*, *Int J Stroke*, *European Stroke Journal*, *JNIS*)
+- Web news (NeurologyLive, Medscape Neurology, AHA/Stroke News, ESO, Healio Neurology via `uv run python main.py scrape`)
 
 ---
 
@@ -20,17 +20,17 @@ Auto-generate weekly Markdown reports on breast cancer treatment trends from:
 PREV=$(ls reports/ -t | head -1)
 echo "Previous report: $PREV"
 
-# 2. Read it fully — note every trial, drug approval, and section topic covered
+# 2. Read it fully — note every trial, guideline update, device/drug approval, and section topic covered
 # 3. Grep key trial names to see what's already documented
-grep -E "DESTINY-Breast|ASCENT|NATALEE|monarchE|VIKTORIA|EMBER|TROPION|INAVO|SERENA" reports/$PREV
+grep -E "ANGEL-ASPECT|SELECT2|TENSION|LASTE|TESLA|DISTAL|ESCAPE-MeVO|DISCOUNT|ENRICH|ANNEXA-I|INTERACT|OCEANIC-STROKE|LIBREXIA|TIMELESS|TRACE|AcT|ELAN|OPTIMAS|ARCADIA" reports/$PREV
 ```
 
 After reading the previous report, answer these before writing:
 - Which trials were already covered with final/mature data? → **skip entirely**
-- Which trials had interim data last week? → include only if new follow-up published
-- Which drug approvals were already documented? → **skip unless label expanded**
+- Which trials had interim or conference abstract data last week? → include only if full manuscript or new subgroup/follow-up published
+- Which drug/device approvals or guidelines were already documented? → **skip unless indication expanded**
 
-**Do NOT repeat** any finding with identical numbers. Mark new follow-up data explicitly: `[更新]` before the subsection heading, and state what changed vs last week.
+**Do NOT repeat** any finding with identical numbers. Mark new follow-up or secondary analysis data explicitly: `[更新]` before the subsection heading, and state what changed vs last week.
 
 If a section has no genuinely new data this week: write `_本週無新訊號_` and move on.
 
@@ -50,36 +50,36 @@ Use ISO week number: `python3 -c "from datetime import date; d=date.today(); pri
 
 ### Required Sections (繁體中文)
 
-```
-# 乳癌治療趨勢週報 — YYYY-WNN
+```markdown
+# 腦中風與腦血管疾病趨勢週報 — YYYY-WNN
 
-> 生成日期：YYYY-MM-DD｜資料來源：...
+> 生成日期：YYYY-MM-DD｜資料來源：OpenEvidence、PubMed、CrossRef（Stroke / Lancet Neurol / JAMA Neurol 等）、NeurologyLive、AHA/ASA、ESO、ClinicalTrials.gov
 > 涵蓋期間：...
 
 ---
 
 ## 摘要
-（本週五大訊號 — bullet points, concrete numbers）
+（本週五大訊號 — bullet points, concrete numbers: OR/RR/HR, 95% CI, mRS 0-1 / 0-2, sICH, mortality）
 
-## 一、HER2 靶向治療
-## 二、ADC 在 TNBC
-## 三、HR+/HER2− 內分泌治療
-## 四、CDK4/6 Inhibitor：輔助治療確立
-## 五、PARP Inhibitor 與 BRCA 族群
-## 六、免疫治療 (TNBC)
-## 七、早期乳癌：手術、放療、風險分層
-## 八、進行中高優先試驗追蹤
-## 九、台灣臨床情境備註
+## 一、靜脈血栓溶解治療 (IVT：Tenecteplase / Alteplase / 延長時間窗)
+## 二、動脈機械取栓與神經介入 (EVT：LVO / Large Core / MeVO / BAO)
+## 三、抗血小板與急性／次級預防 (DAPT / 靜脈抗血小板 / 顱內外動脈狹窄 ICAD & Carotid)
+## 四、心房顫動抗凝血與 Factor XIa 抑制劑 (DOAC 時機 / FXIa / ESUS)
+## 五、出血性中風與腦血管外科 (ICH 血壓與逆轉劑 / 微創手術 / SAH 與腦動脈瘤)
+## 六、腦小血管疾病、血管性失智與神經保護復健 (CSVD / CAA / Neuroprotection / 復健科技)
+## 七、神經影像、AI 輔助診斷與到院前照護系統 (CTP / ASPECTS / Mobile Stroke Unit / 轉診流程)
+## 八、進行中高優先臨床試驗追蹤
+## 九、台灣臨床情境備註 (健保給付規範、tPA/TNK 與 EVT 時間窗、本土登錄研究與指引對照)
 ## 十、本週 Key Takeaways
 
 ## 十一、蜥蜴LLM 點評
-（OpenEvidence分類：practice-changing vs hypothesis-generating）
+（OpenEvidence分類：practice-changing vs hypothesis-generating vs context-dependent）
 
 ## 十二、媒體動態
-（OncDaily / OncLive / ESMO news table）
+（NeurologyLive / Medscape / AHA / ESO / Healio news table）
 
 ## 文獻速報 — CrossRef 期刊
-（LLM-filtered JCO articles）
+（LLM-filtered articles from Stroke, Lancet Neurology, JAMA Neurology, Neurology, JNNP, Int J Stroke, ESJ, JNIS）
 ```
 
 Sections without new data this week should say: `_本週無新訊號_`
@@ -88,10 +88,10 @@ Sections without new data this week should say: `_本週無新訊號_`
 
 ## Writing Style
 
-- Language: **繁體中文**，英文術語保留原文（T-DXd, HR, PFS, iDFS 等）
+- Language: **繁體中文**，英文醫學術語與指標保留原文（AIS, ICH, SAH, LVO, MeVO, IVT, EVT, TNK, tPA, DAPT, DOAC, mRS, NIHSS, ASPECTS, sICH, TICI / eTICI 等）
 - Every clinical claim must cite trial name + author + journal + DOI
-- Tables: use Markdown tables for comparative data (trial vs control arm)
-- Numbers: always include HR, CI, p-value when available
+- Tables: use Markdown tables for comparative data (intervention vs control arm, mRS shift, sICH%, 90-day mortality)
+- Numbers: always include OR / cOR / RR / HR, 95% CI, p-value, and absolute percentages when available
 - Avoid vague superlatives; every "significant" needs a number
 
 ---
@@ -101,8 +101,8 @@ Sections without new data this week should say: `_本週無新訊號_`
 Run in order before writing:
 
 ```bash
-uv run python main.py scrape          # OncDaily + OncLive + ESMO news
-uv run python main.py journals        # JCO CrossRef (keyword pre-screened)
+uv run python main.py scrape          # NeurologyLive + Medscape + AHA + ESO + Healio news
+uv run python main.py journals        # Stroke / Lancet Neurol / JAMA Neurol / etc. via CrossRef
 ```
 
 For full pipeline (including Twitter if credentials available):
@@ -115,10 +115,9 @@ Cached data locations:
 - `data/webscrape_cache.json` — web news articles
 - `data/journals_cache.json` — CrossRef journal articles (pre-screened, not yet final-filtered)
 
-**CrossRef filtering note:** The Python fetcher applies a keyword pre-screen only (broad net).
-When writing the report, read `data/journals_cache.json` and **filter in-session** — discard any
-article whose primary topic is not breast cancer (e.g. gastroesophageal articles that share HER2).
-Only include articles confirmed breast-cancer-relevant in the `## 文獻速報` section.
+**CrossRef filtering note:** For general neurology journals (*Lancet Neurology*, *JAMA Neurology*, *Neurology*, *JNNP*), the Python fetcher applies a two-tier keyword pre-screen (`_STROKE_DIRECT`).
+When writing the report, read `data/journals_cache.json` and **filter in-session** — discard any article whose primary topic is not stroke or cerebrovascular disease (e.g. MS, epilepsy, Alzheimer's, or general cardiology articles without cerebrovascular outcomes).
+Only include articles confirmed stroke/cerebrovascular-relevant in the `## 文獻速報` section.
 
 ---
 
@@ -127,10 +126,10 @@ Only include articles confirmed breast-cancer-relevant in the `## 文獻速報` 
 Use `mcp__openevidence__oe_ask` with a prompt like:
 
 ```
-Based on the following breast cancer findings from this week, classify each as:
+Based on the following stroke and cerebrovascular findings from this week, classify each as:
 - Practice-changing (changes standard of care NOW)
 - Hypothesis-generating (promising but needs confirmation)
-- Context-dependent (changes practice for specific subgroup only)
+- Context-dependent (changes practice for specific subgroup or workflow only)
 
 [list findings with trial names and key numbers]
 ```
@@ -156,18 +155,12 @@ Before finalising, cross-check against the previous report:
 ```bash
 PREV=$(ls reports/ -t | head -2 | tail -1)
 # Check trial names
-grep -E "DESTINY-Breast|ASCENT|NATALEE|monarchE|VIKTORIA|EMBER|TROPION|INAVO|SERENA" reports/$PREV
-# Check HR/PFS numbers — if same numbers appear, it's a repeat
-grep -E "HR [0-9]|PFS [0-9]|iDFS [0-9]|ORR [0-9]" reports/$PREV | head -20
+grep -E "ANGEL-ASPECT|SELECT2|TENSION|LASTE|TESLA|DISTAL|ESCAPE-MeVO|DISCOUNT|ENRICH|ANNEXA-I|INTERACT|OCEANIC-STROKE|LIBREXIA|TIMELESS|TRACE|AcT|ELAN|OPTIMAS|ARCADIA" reports/$PREV
+# Check outcome numbers — if same numbers appear, it's a repeat
+grep -E "OR [0-9]|RR [0-9]|HR [0-9]|mRS [0-9]|sICH [0-9]" reports/$PREV | head -20
 ```
 
 Rules:
 - Same trial + same numbers → **delete the section**
-- Same trial + new data (updated follow-up, subgroup, approval) → keep with `[更新]` tag
+- Same trial + new data (updated follow-up, secondary subgroup analysis, guideline adoption) → keep with `[更新]` tag
 - Brand new trial → include normally
-
----
-
-## Switching to Another Cancer Type
-
-See `README.md` → "如何切換至其他癌種" for step-by-step instructions (DLBCL example included).

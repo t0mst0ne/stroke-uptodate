@@ -1,121 +1,160 @@
-# Drug / target group definitions for tweet and article classification
+# Therapeutic / intervention group definitions for tweet and article classification
 # Used by: reporter.py (trend aggregation)
 # Format: group_name: [keyword, ...]  (case-insensitive matching)
 
 drug_groups:
-  HER2-targeted:
-    - HER2
-    - trastuzumab
-    - pertuzumab
-    - T-DM1
-    - ado-trastuzumab
-    - T-DXd
-    - Enhertu
-    - trastuzumab deruxtecan
-    - tucatinib
-    - Tukysa
-    - lapatinib
-    - neratinib
-    - margetuximab
-    - DESTINY-Breast
+  Intravenous Thrombolysis (IVT):
+    - thrombolysis
+    - intravenous thrombolysis
+    - IVT
+    - tenecteplase
+    - TNK
+    - alteplase
+    - tPA
+    - rt-PA
+    - reteplase
+    - prourokinase
+    - AcT trial
+    - TRACE
+    - TIMELESS
+    - ORIGINAL
+    - EXTEND
 
-  CDK4/6 inhibitors:
-    - CDK4/6
-    - CDK4
-    - CDK6
-    - palbociclib
-    - Ibrance
-    - ribociclib
-    - Kisqali
-    - abemaciclib
-    - Verzenio
-    - MONARCH
-    - MONALEESA
-    - PALOMA
-    - NATALEE
+  Endovascular Thrombectomy (EVT):
+    - thrombectomy
+    - mechanical thrombectomy
+    - endovascular
+    - EVT
+    - stent retriever
+    - aspiration
+    - large vessel occlusion
+    - LVO
+    - medium vessel occlusion
+    - MeVO
+    - basilar artery occlusion
+    - BAO
+    - ANGEL-ASPECT
+    - SELECT2
+    - TENSION
+    - LASTE
+    - TESLA
+    - DISTAL
+    - ESCAPE-MeVO
+    - DISCOUNT
 
-  PARP inhibitors:
-    - PARP
-    - olaparib
-    - Lynparza
-    - talazoparib
-    - Talzenna
-    - niraparib
-    - rucaparib
-    - BRCA
-    - OlympiA
+  Antiplatelet Therapy:
+    - antiplatelet
+    - dual antiplatelet
+    - DAPT
+    - aspirin
+    - clopidogrel
+    - ticagrelor
+    - cilostazol
+    - prasugrel
+    - tirofiban
+    - eptifibatide
+    - CHANCE
+    - POINT
+    - THALES
+    - INSPIRES
 
-  PI3K/AKT/mTOR:
-    - PI3K
-    - alpelisib
-    - Piqray
-    - AKT
-    - capivasertib
-    - mTOR
-    - everolimus
-    - Afinitor
-    - PIK3CA
+  Anticoagulation & Factor XIa:
+    - anticoagulation
+    - anticoagulant
+    - DOAC
+    - NOAC
+    - apixaban
+    - rivaroxaban
+    - dabigatran
+    - edoxaban
+    - warfarin
+    - factor XI
+    - factor XIa
+    - FXIa
+    - asundexian
+    - milvexian
+    - abelacimab
+    - OCEANIC-STROKE
+    - LIBREXIA-STROKE
+    - ELAN
+    - OPTIMAS
+    - ARCADIA
 
-  Immunotherapy:
-    - immunotherapy
-    - checkpoint
-    - PD-1
-    - PD-L1
-    - pembrolizumab
-    - Keytruda
-    - atezolizumab
-    - Tecentriq
-    - TIL
-    - tumor infiltrating lymphocyte
-    - KEYNOTE-522
+  Hemorrhagic Stroke (ICH & SAH):
+    - intracerebral hemorrhage
+    - ICH
+    - hemorrhagic stroke
+    - subarachnoid hemorrhage
+    - SAH
+    - hematoma expansion
+    - cerebral aneurysm
+    - andexanet alfa
+    - idarucizumab
+    - prothrombin complex
+    - tranexamic acid
+    - minimally invasive surgery
+    - decompressive
+    - ENRICH
+    - ANNEXA-I
+    - INTERACT3
+    - INTERACT4
+    - SWITCH
 
-  ADC:
-    - ADC
-    - antibody-drug conjugate
-    - sacituzumab
-    - Trodelvy
-    - datopotamab
-    - Datroway
-    - datopot
-    - TROP2
-    - ASCENT
+  Carotid & Intracranial Stenosis:
+    - carotid stenosis
+    - carotid endarterectomy
+    - CEA
+    - carotid artery stenting
+    - CAS
+    - TCAR
+    - intracranial atherosclerosis
+    - ICAD
+    - moyamoya
+    - CREST
+    - SAMMPRIS
 
-  Endocrine therapy:
-    - endocrine
-    - tamoxifen
-    - aromatase
-    - letrozole
-    - anastrozole
-    - exemestane
-    - fulvestrant
-    - Faslodex
-    - elacestrant
-    - Orserdu
-    - imlunestrant
-    - Inluriyo
-    - ESR1
-    - SERD
-    - EMBER
+  Neuroprotection & Recovery:
+    - neuroprotection
+    - neuroprotective
+    - nerinetide
+    - NA-1
+    - edaravone
+    - butylphthalide
+    - glenzocimab
+    - vagus nerve stimulation
+    - stroke rehabilitation
+    - brain-computer interface
+    - ESCAPE-NEXT
 
-  TNBC:
-    - TNBC
-    - triple negative
-    - triple-negative
-    - capecitabine
-    - carboplatin
-    - nab-paclitaxel
-    - Abraxane
+  Small Vessel Disease & VCI:
+    - small vessel disease
+    - CSVD
+    - lacunar
+    - white matter hyperintensities
+    - CADASIL
+    - cerebral amyloid angiopathy
+    - CAA
+    - vascular cognitive impairment
+    - VCI
 
 # Conference / event keywords (used for flagging conference tweets)
 conference_keywords:
-  - ASCO
-  - SABCS
-  - ESMO
-  - AACR
-  - ASH
+  - ISC
+  - International Stroke Conference
+  - ESOC
+  - European Stroke Organisation Conference
+  - WSC
+  - World Stroke Congress
+  - AAN
+  - EAN
+  - SVIN
+  - SNIS
   - abstract
   - conference
   - congress
-  - "#ASCO"
-  - "#SABCS"
-  - "#ESMO"
+  - "#ISC26"
+  - "#ISC25"
+  - "#ESOC"
+  - "#WSC"
+  - "#AANAM"
+  - "#SVIN"
